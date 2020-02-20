@@ -1,20 +1,25 @@
 package com.example.muneasytravel;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements View.OnKeyListener {
+public class MainActivity extends AppCompatActivity implements View.OnKeyListener, View.OnClickListener {
     ArrayList<Building> buildings = new ArrayList<>();
     private EditText roomEditText;
+    private ImageView munImageView;
+    private ConstraintLayout mainLayout;
     Intent intent = null;
 
     public void showBuilding(View view) {
@@ -52,6 +57,12 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
 //        Log.i("check size", Integer.toString(buildings.size()));
         roomEditText = findViewById(R.id.roomEditText);
         roomEditText.setOnKeyListener(this);
+
+        munImageView = findViewById(R.id.munImageView);
+        munImageView.setOnClickListener(this);
+
+        mainLayout = findViewById(R.id.mainLayout);
+        mainLayout.setOnClickListener(this);
     }
 
     public void setBuildingArrayList() {
@@ -83,5 +94,14 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
             showBuilding(v); // perform the Search button tasks
         }
         return false;
+    }
+
+    @Override
+    public void onClick(View v) {
+        // To ensure the onscreen keyboard hides itself when tapped on the application window
+        if (v.getId() == R.id.mainLayout || v.getId() == R.id.munImageView) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),0);
+        }
     }
 }
