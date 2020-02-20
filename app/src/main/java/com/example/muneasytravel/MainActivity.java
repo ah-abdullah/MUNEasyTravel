@@ -5,13 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnKeyListener {
     ArrayList<Building> buildings = new ArrayList<>();
     private EditText roomEditText;
     Intent intent = null;
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         setBuildingArrayList();
 //        Log.i("check size", Integer.toString(buildings.size()));
         roomEditText = findViewById(R.id.roomEditText);
+        roomEditText.setOnKeyListener(this);
     }
 
     public void setBuildingArrayList() {
@@ -72,5 +74,14 @@ public class MainActivity extends AppCompatActivity {
         buildings.add(new Building("C", 47.573114, -52.733526));
         buildings.add(new Building("H", 47.571497, -52.742860));
         buildings.add(new Building("J", 47.575434, -52.732859));
+    }
+
+    @Override
+    public boolean onKey(View v, int keyCode, KeyEvent event) {
+        // To ensure pressing enter on the on screen keyboard would also perform the intended search button tasks
+        if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+            showBuilding(v); // perform the Search button tasks
+        }
+        return false;
     }
 }
