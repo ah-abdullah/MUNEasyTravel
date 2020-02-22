@@ -32,11 +32,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private ImageButton currentLocationButton;
-    private int buildingIndex;
     private boolean currentLocationButtonIcon = true;
     LatLng destination;
     LatLng userLocation;
-    ArrayList<Building> buildings = new ArrayList<>();
+    Building building;
 
     LocationManager locationManager;
     LocationListener locationListener;
@@ -113,13 +112,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.getUiSettings().setMyLocationButtonEnabled(false); // since we are using our own currentLocationButton
 
         Intent intent = getIntent();
-        buildings = (ArrayList<Building>) intent.getSerializableExtra("room");
-        buildingIndex = Integer.parseInt(intent.getStringExtra("buildingIndex"));
+        building = (Building) intent.getSerializableExtra("room");
 
-        destination = new LatLng(buildings.get(buildingIndex).getLat(), buildings.get(buildingIndex).getLon());
+        destination = new LatLng(building.getLat(), building.getLon());
         // Move the camera to the destination building
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(destination, 17f));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(engineering));
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {

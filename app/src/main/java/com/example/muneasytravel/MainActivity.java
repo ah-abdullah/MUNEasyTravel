@@ -32,8 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
             for (int i = 0; i < buildings.size(); i++) {
                 if (buildingPrefix[0].trim().equals(buildings.get(i).getBuildingName())) {
                     intent = new Intent(getApplicationContext(), MapsActivity.class);
-                    intent.putExtra("room", buildings);
-                    intent.putExtra("buildingIndex", Integer.toString(i));
+                    intent.putExtra("room", buildings.get(i));
                     break;
                 }
             }
