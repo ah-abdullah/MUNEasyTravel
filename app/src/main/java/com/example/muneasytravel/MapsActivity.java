@@ -95,6 +95,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         "&daddr=" + destination.latitude + "," + destination.longitude));
         startActivity(navigationIntent);
     }
+
+    public void openFloorMap(View view) {
+        Intent intent = new Intent(getApplicationContext(), FloorMapActivity.class);
+        startActivity(intent);
+    }
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
