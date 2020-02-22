@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        getSupportActionBar().hide();
 //        buildings.clear();
         setBuildingArrayList();
 //        Log.i("check size", Integer.toString(buildings.size()));
@@ -100,8 +101,12 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
     public void onClick(View v) {
         // To ensure the onscreen keyboard hides itself when tapped on the application window
         if (v.getId() == R.id.mainLayout || v.getId() == R.id.munImageView) {
-            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),0);
+            try {
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+            } catch (Exception e) {
+                Log.i("ClickLayout", e.toString());
+            }
         }
     }
 }

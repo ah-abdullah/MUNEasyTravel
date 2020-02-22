@@ -17,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -30,8 +31,9 @@ import java.util.ArrayList;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private Button currentLocationButton;
-    int buildingIndex;
+    private ImageButton currentLocationButton;
+    private int buildingIndex;
+    private boolean currentLocationButtonIcon = true;
     LatLng destination;
     LatLng userLocation;
     ArrayList<Building> buildings = new ArrayList<>();
@@ -71,14 +73,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.clear();
         // Add a marker in the user location
         userLocation = new LatLng(location.getLatitude(), location.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(userLocation).title("Current Location"));
 
         // Add a marker in the destination building
         mMap.addMarker(new MarkerOptions().position(destination).title("Destination Building"));
     }
 
     public void moveToCurrentLocation(View view) {
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 17f));
+
+        if (currentLocationButtonIcon) {
+            currentLocationButtonIcon = false;
+            currentLocationButton.setImageDrawable(ContextCompat.getDrawable(this, android.R.drawable.ic_menu_myplaces));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 17f));
+        } else {
+            currentLocationButtonIcon = true;
+            currentLocationButton.setImageDrawable(ContextCompat.getDrawable(this, android.R.drawable.ic_menu_mylocation));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(destination, 17f));
+        }
     }
 
     public void startNavigation(View view) {
@@ -98,6 +108,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        mMap.setMyLocationEnabled(true);
+        mMap.getUiSettings().setMyLocationButtonEnabled(false); // since we are using our own currentLocationButton
 
         Intent intent = getIntent();
         buildings = (ArrayList<Building>) intent.getSerializableExtra("room");

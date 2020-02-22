@@ -17,16 +17,16 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp" />
 
-    <Button
+    <ImageButton
         android:id="@+id/currentLocationButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="17dp"
         android:layout_marginBottom="32dp"
         android:onClick="moveToCurrentLocation"
-        android:text="Current Location"
+        android:src="@android:drawable/ic_menu_mylocation"
         tools:layout_conversion_absoluteHeight="48dp"
         tools:layout_conversion_absoluteWidth="88dp"
         tools:layout_editor_absoluteX="0dp"
