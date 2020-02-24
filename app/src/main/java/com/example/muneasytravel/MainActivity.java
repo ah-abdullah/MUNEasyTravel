@@ -5,12 +5,14 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
     private EditText roomEditText;
     private ImageView munImageView;
     private ConstraintLayout mainLayout;
+    private RelativeLayout openingRelativeLayout;
     Intent intent = null;
 
     public void showBuilding(View view) {
@@ -53,6 +56,29 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
 
         getSupportActionBar().hide();
 //        buildings.clear();
+        openingRelativeLayout = findViewById(R.id.openingLayout);
+        openingRelativeLayout.animate().alpha(1).setDuration(1200).start();
+        Runnable r = new Runnable() {
+            @Override
+            public void run(){
+                openingRelativeLayout.animate().alpha(0).setDuration(1200).start();
+            }
+        };
+
+        Handler h = new Handler();
+        h.postDelayed(r, 1500);
+
+        r = new Runnable() {
+            @Override
+            public void run(){
+                openingRelativeLayout.setVisibility(View.INVISIBLE);
+                mainLayout.animate().alpha(1).setDuration(1500).start();
+            }
+        };
+
+        h.postDelayed(r, 2500);
+        mainLayout = findViewById(R.id.mainLayout);
+        mainLayout.setOnClickListener(this);
         setBuildingArrayList();
 //        Log.i("check size", Integer.toString(buildings.size()));
         roomEditText = findViewById(R.id.roomEditText);
@@ -60,9 +86,6 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
 
         munImageView = findViewById(R.id.munImageView);
         munImageView.setOnClickListener(this);
-
-        mainLayout = findViewById(R.id.mainLayout);
-        mainLayout.setOnClickListener(this);
     }
 
     public void setBuildingArrayList() {
@@ -104,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
                 InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                 inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
             } catch (Exception e) {
-                Log.i("ClickLayout", e.toString());
+               e.printStackTrace();
             }
         }
     }
