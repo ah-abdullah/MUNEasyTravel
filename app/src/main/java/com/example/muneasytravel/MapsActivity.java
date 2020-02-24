@@ -98,6 +98,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void openFloorMap(View view) {
         Intent intent = new Intent(getApplicationContext(), FloorMapActivity.class);
+        intent.putExtra("numOfFloor", building.getNumOfFloors());
         startActivity(intent);
     }
     /**
