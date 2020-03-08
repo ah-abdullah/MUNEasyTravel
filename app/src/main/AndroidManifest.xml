@@ -16,9 +16,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ShowCourse" />
+        <activity android:name=".AddCourse" />
         <activity android:name=".UserAuthorization">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -33,17 +36,19 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDpA9WAj-JPHQm-w75sM4lCPM9do24pc-o" />
+            android:value="AIzaSyDNpFIPFgLb5WnQECkq61_wnkH4-8VcJ8c" />
 
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity android:name=".MainActivity">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
     </application>
 

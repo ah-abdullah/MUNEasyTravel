@@ -1,13 +1,22 @@
 package com.example.muneasytravel;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -15,14 +24,18 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnKeyListener, View.OnClickListener {
     ArrayList<Building> buildings = new ArrayList<>();
     private EditText roomEditText;
     private ImageView munImageView;
+    private FirebaseAuth mAuth;
     private ConstraintLayout mainLayout;
     private RelativeLayout openingRelativeLayout;
+    private boolean locationRequestGranted = false;
     Intent intent = null;
 
     public void showBuilding(View view) {
@@ -40,7 +53,12 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
                 }
             }
             if (intent != null) {
-                startActivity(intent);
+                requestLocationPermission();
+//                Intent locationRequestIntent = new Intent(getApplicationContext(), AskLocation.class);
+//                startActivity(locationRequestIntent);
+                if (locationRequestGranted) {
+                    startActivity(intent);
+                }
             } else {
                 Toast.makeText(this, "Please provide a valid room number.", Toast.LENGTH_SHORT).show();
             }
@@ -64,10 +82,73 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
 
         mainLayout.setOnClickListener(this);
         setBuildingArrayList();
-//        Log.i("check size", Integer.toString(buildings.size()));
+//        Log.i("check size", Double.toString(buildings.get(0).getLat()));
         roomEditText.setOnKeyListener(this);
 
         munImageView.setOnClickListener(this);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if(requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    // permission granted so request for location updates
+                    locationRequestGranted = true;
+                }
+            }
+        }
+    }
+
+    public void requestLocationPermission() {
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // did not get permission so request for permission
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            } else {
+                // user gave permission already, so request location updates
+                locationRequestGranted = true;
+            }
+        }
+    }
+
+    // showing menus to add courses, show courses, and log out options
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    // when one of the menu options are pressed
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.addCourses) {
+            Intent intent = new Intent(getApplicationContext(), AddCourse.class);
+            startActivity(intent);
+        } else if (item.getItemId() == R.id.showCourses) {
+            Intent intent = new Intent(getApplicationContext(), ShowCourse.class);
+            startActivity(intent);
+        } else if (item.getItemId() == R.id.logoutMenu) {
+            mAuth = FirebaseAuth.getInstance();
+            mAuth.signOut();
+            // finishes the activity and returns to initial activity
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+//     Logout user if pressed the back button
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mAuth = FirebaseAuth.getInstance();
+        mAuth.signOut();
     }
 
     public void setBuildingArrayList() {
@@ -111,8 +192,15 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
                 mainLayout.animate().alpha(1).setDuration(1500).start();
             }
         };
-
         h.postDelayed(r, 2500);
+
+        r = new Runnable() {
+            @Override
+            public void run(){
+                getSupportActionBar().show();
+            }
+        };
+        h.postDelayed(r, 3500);
     }
 
     @Override

@@ -13,6 +13,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class UserAuthorization extends AppCompatActivity {
 
@@ -35,8 +36,6 @@ public class UserAuthorization extends AppCompatActivity {
         if (mAuth.getCurrentUser() != null) {
             loginUser();
         }
-
-
     }
 
     public void loginUserButton(View view) {
@@ -64,6 +63,7 @@ public class UserAuthorization extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign up user (Add to Firebase Database)
+                            FirebaseDatabase.getInstance().getReference().child("Users").child(task.getResult().getUser().getUid()).child("Email").setValue(emailEditText.getText().toString());
                             loginUser();
                         } else {
                             Toast.makeText(UserAuthorization.this, "Signup failed. Please try again",
