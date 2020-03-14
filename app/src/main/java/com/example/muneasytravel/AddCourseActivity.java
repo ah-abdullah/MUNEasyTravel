@@ -7,15 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.HashMap;
-import java.util.Map;
-
 public class AddCourseActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
     private EditText courseNameEditText;
     private EditText roomNoEditText;
 
@@ -29,18 +22,15 @@ public class AddCourseActivity extends AppCompatActivity {
         roomNoEditText = findViewById(R.id.roomNoEditText);
     }
 
-    public void addCourse(View view) {
-        Map<String,String> courseMap = new HashMap<>();
-        courseMap.put("CourseName", courseNameEditText.getText().toString());
-        courseMap.put("Room", roomNoEditText.getText().toString());
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid()).child("Course").push().setValue(courseMap);
-        //FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid()).child("Course").child("Room").setValue(roomNoEditText.getText().toString());
-        Intent intent = new Intent(getApplicationContext(), ShowCourseActivity.class);
-        startActivity(intent);
+    public void addButtonClicked(View view) {
+        AddCourseInterface storeCourse = new StoreCourseInDatabase(courseNameEditText, roomNoEditText);
+        if (storeCourse.addCourse()) {
+            Intent intent = new Intent(getApplicationContext(), ShowCourseActivity.class);
+            startActivity(intent);
+        }
     }
 
-    public void cancelCourse(View view) {
+    public void cancelButtonClicked(View view) {
         finish();
     }
 }
