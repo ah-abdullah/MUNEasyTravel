@@ -13,7 +13,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AddCourse extends AppCompatActivity {
+public class AddCourseActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private EditText courseNameEditText;
@@ -36,7 +36,7 @@ public class AddCourse extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid()).child("Course").push().setValue(courseMap);
         //FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid()).child("Course").child("Room").setValue(roomNoEditText.getText().toString());
-        Intent intent = new Intent(getApplicationContext(), ShowCourse.class);
+        Intent intent = new Intent(getApplicationContext(), ShowCourseActivity.class);
         startActivity(intent);
     }
 

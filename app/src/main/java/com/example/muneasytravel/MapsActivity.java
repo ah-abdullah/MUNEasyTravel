@@ -121,12 +121,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Intent intent = getIntent();
         building = (Building) intent.getSerializableExtra("room");
 
-        try {
-            Log.i("check getLat() n Maps", Double.toString(building.getLat()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         destination = new LatLng(building.getLat(), building.getLon());
         // Move the camera to the destination building
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(destination, 17f));

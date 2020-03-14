@@ -31,7 +31,7 @@ public class FloorMapActivity extends AppCompatActivity {
         floor5Button = findViewById(R.id.floor5Button);
 
         Intent intent = getIntent();
-        numberOfFloor = intent.getIntExtra("numOfFloor", 0);
+        numberOfFloor = intent.getIntExtra("numOfFloor", 1);
 
         switch(numberOfFloor) {
             case 1:

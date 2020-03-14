@@ -20,7 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-public class ShowCourse extends AppCompatActivity {
+public class ShowCourseActivity extends AppCompatActivity {
 
     private ListView courseListView;
     private ArrayList<String> courseName = new ArrayList<>();

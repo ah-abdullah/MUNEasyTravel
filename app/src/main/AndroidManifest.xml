@@ -16,9 +16,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ShowCourse" />
-        <activity android:name=".AddCourse" />
-        <activity android:name=".UserAuthorization">
+        <activity android:name=".ShowCourseActivity" />
+        <activity android:name=".AddCourseActivity" />
+        <activity android:name=".UserAuthorizationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

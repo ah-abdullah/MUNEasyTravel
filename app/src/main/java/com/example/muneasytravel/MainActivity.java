@@ -12,7 +12,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -47,8 +46,9 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
             // buildingPrefix[0] will have the building prefix.
             for (int i = 0; i < buildings.size(); i++) {
                 if (buildingPrefix[0].trim().equals(buildings.get(i).getBuildingName())) {
-                    intent = new Intent(getApplicationContext(), MapsActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
                     intent.putExtra("room", buildings.get(i));
+                    startActivity(intent);
                     break;
                 }
             }
@@ -128,10 +128,10 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.addCourses) {
-            Intent intent = new Intent(getApplicationContext(), AddCourse.class);
+            Intent intent = new Intent(getApplicationContext(), AddCourseActivity.class);
             startActivity(intent);
         } else if (item.getItemId() == R.id.showCourses) {
-            Intent intent = new Intent(getApplicationContext(), ShowCourse.class);
+            Intent intent = new Intent(getApplicationContext(), ShowCourseActivity.class);
             startActivity(intent);
         } else if (item.getItemId() == R.id.logoutMenu) {
             mAuth = FirebaseAuth.getInstance();

@@ -15,7 +15,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class UserAuthorization extends AppCompatActivity {
+public class UserAuthorizationActivity extends AppCompatActivity {
 
     private EditText emailEditText;
     private EditText passwordEditText;
@@ -48,7 +48,7 @@ public class UserAuthorization extends AppCompatActivity {
                             loginUser();
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(UserAuthorization.this, "Invalid username/password. Please sign up " +
+                            Toast.makeText(UserAuthorizationActivity.this, "Invalid username/password. Please sign up " +
                                             "if you are a new user.",
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -66,7 +66,7 @@ public class UserAuthorization extends AppCompatActivity {
                             FirebaseDatabase.getInstance().getReference().child("Users").child(task.getResult().getUser().getUid()).child("Email").setValue(emailEditText.getText().toString());
                             loginUser();
                         } else {
-                            Toast.makeText(UserAuthorization.this, "Signup failed. Please try again",
+                            Toast.makeText(UserAuthorizationActivity.this, "Signup failed. Please try again",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
