@@ -42,17 +42,11 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
         String room = "";
         room = roomEditText.getText().toString().toUpperCase();
         if (!room.equals("")) {
-            String[] buildingPrefix = room.split("(?<=\\D)(?=\\d)", 2); // splitting the building prefix and the rest of the room number
-            // buildingPrefix[0] will have the building prefix.
-            for (int i = 0; i < buildings.size(); i++) {
-                if (buildingPrefix[0].trim().equals(buildings.get(i).getBuildingName())) {
-                    intent = new Intent(getApplicationContext(), MapsActivity.class);
-                    intent.putExtra("room", buildings.get(i));
-//                    startActivity(intent);
-                    break;
-                }
-            }
-            if (intent != null) {
+            ValidateUserInputInterface validateRoomNo = new ValidateRoomNo(room, buildings);
+            if (validateRoomNo.validate()) {
+                Integer i = ((ValidateRoomNo) validateRoomNo).getFoundBuildingIndex();
+                intent = new Intent(getApplicationContext(), MapsActivity.class);
+                intent.putExtra("room", buildings.get(i));
                 requestLocationPermission();
                 if (locationRequestGranted) {
                     startActivity(intent);
@@ -61,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
                 Toast.makeText(this, "Please provide a valid room number.", Toast.LENGTH_SHORT).show();
             }
         } else {
-            Toast.makeText(this, "Please provide a room number.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Please provide a room number.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -128,11 +122,15 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.addCourses) {
             Intent intent = new Intent(getApplicationContext(), AddCourseActivity.class);
+            intent.putExtra("buildingList", buildings);
             startActivity(intent);
         } else if (item.getItemId() == R.id.showCourses) {
             Intent intent = new Intent(getApplicationContext(), ShowCourseActivity.class);
+            intent.putExtra("buildingList", buildings);
             startActivity(intent);
         } else if (item.getItemId() == R.id.logoutMenu) {
+            UserAuthorizationFirebase.setLoginResult(false);
+            UserAuthorizationFirebase.setSignupResult(false);
             mAuth = FirebaseAuth.getInstance();
             mAuth.signOut();
             // finishes the activity and returns to initial activity
@@ -146,6 +144,8 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        UserAuthorizationFirebase.setLoginResult(false);
+        UserAuthorizationFirebase.setSignupResult(false);
         mAuth = FirebaseAuth.getInstance();
         mAuth.signOut();
     }

@@ -14,12 +14,20 @@ public class UserAuthorizationFirebase implements UserAuthorizationInterface {
 
     private EditText emailEditText;
     private EditText passwordEditText;
-    private boolean loginResult;
-    private boolean signupResult;
+    private static boolean loginResult;
+    private static boolean signupResult;
+
+    public static void setLoginResult(boolean loginResult) {
+        UserAuthorizationFirebase.loginResult = loginResult;
+    }
+
+    public static void setSignupResult(boolean signupResult) {
+        UserAuthorizationFirebase.signupResult = signupResult;
+    }
 
     public UserAuthorizationFirebase() {
-        this.loginResult = false;
-        this.signupResult = false;
+        UserAuthorizationFirebase.loginResult = false;
+        UserAuthorizationFirebase.signupResult = false;
     }
 
     @Override
@@ -30,7 +38,7 @@ public class UserAuthorizationFirebase implements UserAuthorizationInterface {
 
     @Override
     public boolean login() {
-        loginResult = false;
+//        loginResult = false;
         if (!emailEditText.getText().toString().equals("") && !passwordEditText.getText().toString().equals("")) {
             FirebaseAuth.getInstance().signInWithEmailAndPassword(emailEditText.getText().toString(), passwordEditText.getText().toString())
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -51,7 +59,7 @@ public class UserAuthorizationFirebase implements UserAuthorizationInterface {
 
     @Override
     public boolean signup() {
-        signupResult = false;
+//        signupResult = false;
         if (!emailEditText.getText().toString().equals("") && !passwordEditText.getText().toString().equals("")) {
             FirebaseAuth.getInstance().createUserWithEmailAndPassword(emailEditText.getText().toString(), passwordEditText.getText().toString())
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
