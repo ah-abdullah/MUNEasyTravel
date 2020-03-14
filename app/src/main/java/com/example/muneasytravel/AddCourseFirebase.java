@@ -8,11 +8,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StoreCourseInDatabase implements AddCourseInterface {
+public class AddCourseFirebase implements AddCourseInterface {
     private EditText courseNameEditText;
     private EditText roomNoEditText;
 
-    public StoreCourseInDatabase(EditText courseNameEditText, EditText roomNoEditText) {
+    public AddCourseFirebase(EditText courseNameEditText, EditText roomNoEditText) {
         this.courseNameEditText = courseNameEditText;
         this.roomNoEditText = roomNoEditText;
     }

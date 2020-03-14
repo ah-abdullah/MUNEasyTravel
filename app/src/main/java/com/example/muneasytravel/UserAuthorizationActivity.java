@@ -20,6 +20,7 @@ public class UserAuthorizationActivity extends AppCompatActivity {
     private EditText emailEditText;
     private EditText passwordEditText;
     private FirebaseAuth mAuth;
+    private UserAuthorizationInterface userAuthorization;
 
 
     @Override
@@ -31,6 +32,7 @@ public class UserAuthorizationActivity extends AppCompatActivity {
 
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
+        userAuthorization = new UserAuthorizationFirebase();
         mAuth = FirebaseAuth.getInstance();
 
         if (mAuth.getCurrentUser() != null) {
@@ -39,38 +41,26 @@ public class UserAuthorizationActivity extends AppCompatActivity {
     }
 
     public void loginUserButton(View view) {
-        mAuth.signInWithEmailAndPassword(emailEditText.getText().toString(), passwordEditText.getText().toString())
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success
-                            loginUser();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(UserAuthorizationActivity.this, "Invalid username/password. Please sign up " +
-                                            "if you are a new user.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+        userAuthorization.setEditTexts(emailEditText,passwordEditText);
+        if (userAuthorization.login()) {
+            loginUser();
+        } else {
+            // If sign in fails, display a message to the user.
+            Toast.makeText(UserAuthorizationActivity.this, "Invalid username/password. Please sign up " +
+                            "if you are a new user.",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void signupUserButton(View view) {
-        mAuth.createUserWithEmailAndPassword(emailEditText.getText().toString(), passwordEditText.getText().toString())
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign up user (Add to Firebase Database)
-                            FirebaseDatabase.getInstance().getReference().child("Users").child(task.getResult().getUser().getUid()).child("Email").setValue(emailEditText.getText().toString());
-                            loginUser();
-                        } else {
-                            Toast.makeText(UserAuthorizationActivity.this, "Signup failed. Please try again",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+        userAuthorization.setEditTexts(emailEditText,passwordEditText);
+        if (userAuthorization.signup()) {
+            loginUser();
+        } else {
+            // If sign up fails, display a message to the user.
+            Toast.makeText(UserAuthorizationActivity.this, "Signup failed. Please try again",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     // move to main activity

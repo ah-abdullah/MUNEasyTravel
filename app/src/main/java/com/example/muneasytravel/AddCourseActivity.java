@@ -23,7 +23,7 @@ public class AddCourseActivity extends AppCompatActivity {
     }
 
     public void addButtonClicked(View view) {
-        AddCourseInterface storeCourse = new StoreCourseInDatabase(courseNameEditText, roomNoEditText);
+        AddCourseInterface storeCourse = new AddCourseFirebase(courseNameEditText, roomNoEditText);
         if (storeCourse.addCourse()) {
             Intent intent = new Intent(getApplicationContext(), ShowCourseActivity.class);
             startActivity(intent);

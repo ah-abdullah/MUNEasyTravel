@@ -28,14 +28,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnKeyListener, View.OnClickListener {
-    ArrayList<Building> buildings = new ArrayList<>();
+    private ArrayList<Building> buildings = new ArrayList<>();
     private EditText roomEditText;
     private ImageView munImageView;
     private FirebaseAuth mAuth;
     private ConstraintLayout mainLayout;
     private RelativeLayout openingRelativeLayout;
     private boolean locationRequestGranted = false;
-    Intent intent = null;
+    private Intent intent = null;
 
     public void showBuilding(View view) {
         intent = null;
@@ -46,16 +46,14 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
             // buildingPrefix[0] will have the building prefix.
             for (int i = 0; i < buildings.size(); i++) {
                 if (buildingPrefix[0].trim().equals(buildings.get(i).getBuildingName())) {
-                    Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                    intent = new Intent(getApplicationContext(), MapsActivity.class);
                     intent.putExtra("room", buildings.get(i));
-                    startActivity(intent);
+//                    startActivity(intent);
                     break;
                 }
             }
             if (intent != null) {
                 requestLocationPermission();
-//                Intent locationRequestIntent = new Intent(getApplicationContext(), AskLocation.class);
-//                startActivity(locationRequestIntent);
                 if (locationRequestGranted) {
                     startActivity(intent);
                 }
@@ -81,7 +79,8 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
         startOpeningAnimation();
 
         mainLayout.setOnClickListener(this);
-        setBuildingArrayList();
+        BuildingListInterface createBuildingList = new ConstructBuildingList(buildings);
+        createBuildingList.setBuildingArrayList();
 //        Log.i("check size", Double.toString(buildings.get(0).getLat()));
         roomEditText.setOnKeyListener(this);
 
@@ -149,28 +148,6 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
         super.onBackPressed();
         mAuth = FirebaseAuth.getInstance();
         mAuth.signOut();
-    }
-
-    public void setBuildingArrayList() {
-        buildings.add(new Building("AA", 47.571119, -52.732470, 4));
-        buildings.add(new Building("EN", 47.5749547, -52.7353382, 4));
-        buildings.add(new Building("ED", 47.571138, -52.735965, 5));
-        buildings.add(new Building("BN", 47.575305, -52.734239));
-        buildings.add(new Building("BT", 47.572472, -52.733165));
-        buildings.add(new Building("CL", 47.575979, -52.731578));
-        buildings.add(new Building("CS", 47.572119, -52.732740));
-        buildings.add(new Building("ER", 47.573991, -52.734271));
-        buildings.add(new Building("HH", 47.571609, -52.731290));
-        buildings.add(new Building("MU", 47.572126, -52.730651));
-        buildings.add(new Building("PA", 47.572083, -52.731621));
-        buildings.add(new Building("SN", 47.572083, -52.731621));
-        buildings.add(new Building("PE", 47.571072, -52.733971));
-        buildings.add(new Building("QC", 47.577405, -52.730332, 4));
-        buildings.add(new Building("UC", 47.573277, -52.735325, 5));
-        buildings.add(new Building("A", 47.571119, -52.732470, 4));
-        buildings.add(new Building("C", 47.573114, -52.733526));
-        buildings.add(new Building("H", 47.571497, -52.742860));
-        buildings.add(new Building("J", 47.575434, -52.732859));
     }
 
     public void startOpeningAnimation() {
