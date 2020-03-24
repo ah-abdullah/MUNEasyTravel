@@ -129,8 +129,6 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
             intent.putExtra("buildingList", buildings);
             startActivity(intent);
         } else if (item.getItemId() == R.id.logoutMenu) {
-            UserAuthorizationFirebase.setLoginResult(false);
-            UserAuthorizationFirebase.setSignupResult(false);
             mAuth = FirebaseAuth.getInstance();
             mAuth.signOut();
             // finishes the activity and returns to initial activity
@@ -144,8 +142,6 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        UserAuthorizationFirebase.setLoginResult(false);
-        UserAuthorizationFirebase.setSignupResult(false);
         mAuth = FirebaseAuth.getInstance();
         mAuth.signOut();
     }

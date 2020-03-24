@@ -14,21 +14,6 @@ public class UserAuthorizationFirebase implements UserAuthorizationInterface {
 
     private EditText emailEditText;
     private EditText passwordEditText;
-    private static boolean loginResult;
-    private static boolean signupResult;
-
-    public static void setLoginResult(boolean loginResult) {
-        UserAuthorizationFirebase.loginResult = loginResult;
-    }
-
-    public static void setSignupResult(boolean signupResult) {
-        UserAuthorizationFirebase.signupResult = signupResult;
-    }
-
-    public UserAuthorizationFirebase() {
-        UserAuthorizationFirebase.loginResult = false;
-        UserAuthorizationFirebase.signupResult = false;
-    }
 
     @Override
     public void setEditTexts(EditText emailEditText, EditText passwordEditText) {
@@ -37,8 +22,7 @@ public class UserAuthorizationFirebase implements UserAuthorizationInterface {
     }
 
     @Override
-    public boolean login() {
-//        loginResult = false;
+    public void login() {
         if (!emailEditText.getText().toString().equals("") && !passwordEditText.getText().toString().equals("")) {
             FirebaseAuth.getInstance().signInWithEmailAndPassword(emailEditText.getText().toString(), passwordEditText.getText().toString())
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -46,35 +30,29 @@ public class UserAuthorizationFirebase implements UserAuthorizationInterface {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 // Sign in success
-                                loginResult = true;
                             } else {
                                 // If sign in fails, display a message to the user.
-                                loginResult = false;
                             }
                         }
                     });
         }
-        return loginResult;
     }
 
     @Override
-    public boolean signup() {
-//        signupResult = false;
+    public void signup() {
         if (!emailEditText.getText().toString().equals("") && !passwordEditText.getText().toString().equals("")) {
             FirebaseAuth.getInstance().createUserWithEmailAndPassword(emailEditText.getText().toString(), passwordEditText.getText().toString())
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                // Sign up user (Add to Firebase Database)
-                                signupResult = true;
+                                // Sign up user (Add to Firebase Database
                                 FirebaseDatabase.getInstance().getReference().child("Users").child(task.getResult().getUser().getUid()).child("Email").setValue(emailEditText.getText().toString());
                             } else {
-                                signupResult = false;
+                                // Sign in fails
                             }
                         }
                     });
         }
-        return signupResult;
     }
 }

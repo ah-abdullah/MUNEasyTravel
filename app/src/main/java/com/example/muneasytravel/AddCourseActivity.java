@@ -15,7 +15,6 @@ public class AddCourseActivity extends AppCompatActivity {
     private EditText courseNameEditText;
     private EditText roomNoEditText;
     private ArrayList<Building> buildings;
-//    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
