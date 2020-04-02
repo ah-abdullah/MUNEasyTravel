@@ -25,6 +25,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="17dp"
         android:layout_marginBottom="32dp"
+        android:background="@drawable/button_rounded"
         android:onClick="moveToCurrentLocation"
         android:src="@android:drawable/ic_menu_mylocation"
         tools:layout_conversion_absoluteHeight="48dp"
@@ -40,6 +41,10 @@
         android:layout_marginEnd="9dp"
         android:layout_marginBottom="32dp"
         android:layout_toStartOf="@+id/currentLocationButton"
+        android:background="@drawable/button_rounded"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:textColor="@android:color/background_light"
         android:onClick="startNavigation"
         android:text="Start Navigation" />
 
@@ -51,6 +56,10 @@
         android:layout_marginEnd="9dp"
         android:layout_marginBottom="32dp"
         android:layout_toStartOf="@+id/navigationButton"
+        android:background="@drawable/button_rounded"
+        android:textColor="@android:color/background_light"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
         android:onClick="openFloorMap"
         android:text="Floor Map" />
 
