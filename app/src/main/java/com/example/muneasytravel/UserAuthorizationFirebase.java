@@ -10,17 +10,22 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
+/***********************************************************************************************************
+ * UserAuthorizationFirebase implements UserAuthorizationInterface, which will be our authentication service
+ */
 public class UserAuthorizationFirebase implements UserAuthorizationInterface {
 
     private EditText emailEditText;
     private EditText passwordEditText;
 
+    // Get the email address, password provided by the user
     @Override
     public void setEditTexts(EditText emailEditText, EditText passwordEditText) {
         this.emailEditText = emailEditText;
         this.passwordEditText = passwordEditText;
     }
 
+    // Process login using Firebase
     @Override
     public void login() {
         if (!emailEditText.getText().toString().equals("") && !passwordEditText.getText().toString().equals("")) {
@@ -28,16 +33,17 @@ public class UserAuthorizationFirebase implements UserAuthorizationInterface {
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                // Sign in success
-                            } else {
-                                // If sign in fails, display a message to the user.
-                            }
+//                            if (task.isSuccessful()) {
+//                                // Sign in success
+//                            } else {
+//                                // Sign in fails
+//                            }
                         }
                     });
         }
     }
 
+    // Process Signup using Firebase
     @Override
     public void signup() {
         if (!emailEditText.getText().toString().equals("") && !passwordEditText.getText().toString().equals("")) {
@@ -46,11 +52,12 @@ public class UserAuthorizationFirebase implements UserAuthorizationInterface {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                // Sign up user (Add to Firebase Database
+                                // Sign up user + Add to Firebase Database)
                                 FirebaseDatabase.getInstance().getReference().child("Users").child(task.getResult().getUser().getUid()).child("Email").setValue(emailEditText.getText().toString());
-                            } else {
-                                // Sign in fails
                             }
+//                            else {
+//                                // Sign in fails
+//                            }
                         }
                     });
         }

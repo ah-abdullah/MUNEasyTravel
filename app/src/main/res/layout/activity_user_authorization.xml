@@ -76,7 +76,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="guestLogin"
-        android:text="Not a registered user? Click here for guest access."
+        android:text="Click here for guest access."
         android:textColor="#91003B"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"

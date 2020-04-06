@@ -14,6 +14,10 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
+/***************************************************
+ * UpdateCourseObserver extends Observer
+ * Used to update the ShowCourseActivity courseListView when users are moved to ShowCourseActivity
+ */
 public class UpdateCourseObserver extends Observer {
 
     private ListView courseListView;
@@ -28,15 +32,16 @@ public class UpdateCourseObserver extends Observer {
         this.roomNo = roomNo;
     }
 
+    // Getting the stored courses from Firebase Database
     @Override
     public void update() {
-        courseListView.setAdapter(adapter);
+        courseListView.setAdapter(adapter); // courseListView is using the adapter ArrayAdapter to show the added courses
         FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Course").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 courseName.add(dataSnapshot.child("CourseName").getValue().toString());
                 roomNo.add(dataSnapshot.child("Room").getValue().toString());
-                adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged(); // update adapter if anything is changed (courses are added by users)
             }
 
             @Override

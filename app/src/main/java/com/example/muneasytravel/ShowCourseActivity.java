@@ -19,6 +19,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+/**
+ * ShowCourseActivity is for registered users to view the courses they have stored in the database
+ * Tapping one any of the added courses will direct users to the MapsActivity with the appropriate building marked on the map
+ * ShowCourseActivity not accessible by guest users
+ */
 public class ShowCourseActivity extends AppCompatActivity {
 
     private ArrayList<String> courseName = new ArrayList<>();
@@ -33,24 +38,25 @@ public class ShowCourseActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Courses");
         Intent intent = getIntent();
-        buildings = (ArrayList<Building>) intent.getSerializableExtra("buildingList");
+        buildings = (ArrayList<Building>) intent.getSerializableExtra("buildingList"); // collect the building list passed from MainActivity/AddCourseActivity
         ListView courseListView = findViewById(R.id.courseListView);
         courseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ValidateUserInputInterface validateRoomNo = new ValidateRoomNo(roomNo.get(position), buildings);
-                if (validateRoomNo.validate()) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) { // If user taps any of the added courses, the following are executed
+                ValidateUserInputInterface validateRoomNo = new ValidateRoomNo(roomNo.get(position), buildings); // Procedure to validate room no. is delegated (application of Dependency Inversion Principle (DIP))
+                if (validateRoomNo.validate()) { // room no. is validated, so add course name and room number to the database
                     Integer i = ((ValidateRoomNo) validateRoomNo).getFoundBuildingIndex();
                     Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
                     intent.putExtra("room", buildings.get(i));
-                    requestLocationPermission();
-                    if (locationRequestGranted) {
-                        startActivity(intent);
+                    requestLocationPermission(); // ask user for location access permission if user never granted the permission
+                    if (locationRequestGranted) { // location access permission granted, so move user to MapsActivity
+                        startActivity(intent); // moving user to MapsActivity
                     }
                 }
             }
         });
 
+        // Setting up the ArrayAdapter that courseListView is using
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_2, android.R.id.text1, courseName){
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
@@ -63,6 +69,8 @@ public class ShowCourseActivity extends AppCompatActivity {
                 return view;
             }
         };
+
+        // Application of Observer pattern
         Observer observer = new UpdateCourseObserver(courseListView, adapter, courseName, roomNo);
         observer.update();
     }

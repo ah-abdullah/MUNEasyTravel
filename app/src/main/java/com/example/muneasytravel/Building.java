@@ -1,7 +1,9 @@
 package com.example.muneasytravel;
-import android.os.Parcel;
 import java.io.Serializable;
 
+/**
+ * Building class containing the required building prefix, latitude, longitude, number of floors information of each building
+ */
 public class Building implements Serializable {
     private double lat;
     private double lon;
@@ -12,6 +14,7 @@ public class Building implements Serializable {
         this(buildingName, lat, lon, 1);
     }
 
+    // constructor overloading
     public Building(String buildingName, double lat, double lon, int numOfFloors) {
         this.lat = lat;
         this.lon = lon;

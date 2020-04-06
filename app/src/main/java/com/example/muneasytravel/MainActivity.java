@@ -27,6 +27,9 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
+/**
+ * MainActivity for registered logged in users providing them the various functionality of the application
+ */
 public class MainActivity extends AppCompatActivity implements View.OnKeyListener, View.OnClickListener {
     private ArrayList<Building> buildings = new ArrayList<>();
     private EditText roomEditText;
@@ -37,24 +40,25 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
     private boolean locationRequestGranted = false;
     private Intent intent = null;
 
+    // Is executed when user taps Search button
     public void showBuilding(View view) {
         intent = null;
         String room = "";
         room = roomEditText.getText().toString().toUpperCase();
-        if (!room.equals("")) {
-            ValidateUserInputInterface validateRoomNo = new ValidateRoomNo(room, buildings);
-            if (validateRoomNo.validate()) {
-                Integer i = ((ValidateRoomNo) validateRoomNo).getFoundBuildingIndex();
+        if (!room.equals("")) { // checks if user left the text field empty
+            ValidateUserInputInterface validateRoomNo = new ValidateRoomNo(room, buildings); // Procedure to validate room no. is delegated (application of Dependency Inversion Principle (DIP))
+            if (validateRoomNo.validate()) { // room no. is validated
+                Integer i = ((ValidateRoomNo) validateRoomNo).getFoundBuildingIndex(); // Getting the index of the matched building corresponding to the room no.
                 intent = new Intent(getApplicationContext(), MapsActivity.class);
-                intent.putExtra("room", buildings.get(i));
-                requestLocationPermission();
-                if (locationRequestGranted) {
+                intent.putExtra("room", buildings.get(i)); // passing the matched building information to the MapsActivity
+                requestLocationPermission(); // ask user for location access permission if user never granted the permission
+                if (locationRequestGranted) { // location access permission granted, so move user to MapsActivity
                     startActivity(intent);
                 }
-            } else {
+            } else { // Invalid room no., so show error message to the user
                 Toast.makeText(this, "Please provide a valid room number.", Toast.LENGTH_SHORT).show();
             }
-        } else {
+        } else { // user left the text field empty, so show error message to the user
         Toast.makeText(this, "Please provide a room number.", Toast.LENGTH_SHORT).show();
         }
     }
@@ -68,14 +72,12 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
         roomEditText = findViewById(R.id.roomEditText);
         munImageView = findViewById(R.id.munImageView);
         mainLayout = findViewById(R.id.mainLayout);
-//        buildings.clear();
         openingRelativeLayout = findViewById(R.id.openingLayout);
         startOpeningAnimation();
 
         mainLayout.setOnClickListener(this);
-        BuildingListInterface createBuildingList = new ConstructBuildingList(buildings);
+        BuildingListInterface createBuildingList = new ConstructBuildingList(buildings); // Procedure construct the building list is delegated (application of Dependency Inversion Principle (DIP))
         createBuildingList.setBuildingArrayList();
-//        Log.i("check size", Double.toString(buildings.get(0).getLat()));
         roomEditText.setOnKeyListener(this);
 
         munImageView.setOnClickListener(this);
@@ -120,15 +122,15 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
     // when one of the menu options are pressed
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.addCourses) {
+        if (item.getItemId() == R.id.addCourses) { // Add Course is tapped
             Intent intent = new Intent(getApplicationContext(), AddCourseActivity.class);
-            intent.putExtra("buildingList", buildings);
+            intent.putExtra("buildingList", buildings); // pass the already constructed Building ArrayList to ensure it is not constructed every time in new Activity
             startActivity(intent);
-        } else if (item.getItemId() == R.id.showCourses) {
+        } else if (item.getItemId() == R.id.showCourses) { // Show Course is tapped
             Intent intent = new Intent(getApplicationContext(), ShowCourseActivity.class);
-            intent.putExtra("buildingList", buildings);
+            intent.putExtra("buildingList", buildings); // pass the already constructed Building ArrayList to ensure it is not constructed every time in new Activity
             startActivity(intent);
-        } else if (item.getItemId() == R.id.logoutMenu) {
+        } else if (item.getItemId() == R.id.logoutMenu) { // Log Out is tapped
             mAuth = FirebaseAuth.getInstance();
             mAuth.signOut();
             // finishes the activity and returns to initial activity
@@ -138,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
         return super.onOptionsItemSelected(item);
     }
 
-//     Logout user if pressed the back button
+    // Logout user if the back button is pressed
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -146,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
         mAuth.signOut();
     }
 
+    // Opening Animation in the form of transition fading
     public void startOpeningAnimation() {
         openingRelativeLayout.animate().alpha(1).setDuration(1200).start();
         Runnable r = new Runnable() {
@@ -176,6 +179,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
         h.postDelayed(r, 3500);
     }
 
+    // Codes below are for enhanced user experience while using the on-screen keyboard
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
         // To ensure pressing enter on the on screen keyboard would also perform the intended search button tasks

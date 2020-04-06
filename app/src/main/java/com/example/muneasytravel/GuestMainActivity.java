@@ -13,9 +13,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -23,10 +20,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 import java.util.ArrayList;
 
+/**
+ * GuestMainActivity is where guest users are redirected to
+ * Has the same functionality of the MainActivity excluding Add Course, Show Course functionality
+ */
 public class GuestMainActivity extends AppCompatActivity implements View.OnKeyListener, View.OnClickListener {
     private ArrayList<Building> buildings = new ArrayList<>();
     private EditText roomEditText;
@@ -36,24 +35,26 @@ public class GuestMainActivity extends AppCompatActivity implements View.OnKeyLi
     private boolean locationRequestGranted = false;
     private Intent intent = null;
 
+    // Is executed when user taps Search button
     public void showBuilding(View view) {
         intent = null;
         String room = "";
         room = roomEditText.getText().toString().toUpperCase();
-        if (!room.equals("")) {
-            ValidateUserInputInterface validateRoomNo = new ValidateRoomNo(room, buildings);
+        if (!room.equals("")) { // checks if user left the text field empty
+            ValidateUserInputInterface validateRoomNo = new ValidateRoomNo(room, buildings); // Procedure to validate room no. is delegated (application of Dependency Inversion Principle (DIP))
+            // room no. is validated, so move user to the MapsActivity
             if (validateRoomNo.validate()) {
-                Integer i = ((ValidateRoomNo) validateRoomNo).getFoundBuildingIndex();
+                Integer i = ((ValidateRoomNo) validateRoomNo).getFoundBuildingIndex(); // Getting the index of the matched building corresponding to the room no.
                 intent = new Intent(getApplicationContext(), MapsActivity.class);
-                intent.putExtra("room", buildings.get(i));
-                requestLocationPermission();
-                if (locationRequestGranted) {
+                intent.putExtra("room", buildings.get(i)); // passing the matched building information to the MapsActivity
+                requestLocationPermission(); // ask user for location access permission if user never granted the permission
+                if (locationRequestGranted) { // location access permission granted, so move user to MapsActivity
                     startActivity(intent);
                 }
-            } else {
+            } else { // Invalid room no., so show error message to the user
                 Toast.makeText(this, "Please provide a valid room number.", Toast.LENGTH_SHORT).show();
             }
-        } else {
+        } else { // user left the text field empty, so show error message to the user
             Toast.makeText(this, "Please provide a room number.", Toast.LENGTH_SHORT).show();
         }
     }
@@ -67,14 +68,12 @@ public class GuestMainActivity extends AppCompatActivity implements View.OnKeyLi
         roomEditText = findViewById(R.id.roomEditText);
         munImageView = findViewById(R.id.munImageView);
         mainLayout = findViewById(R.id.mainLayout);
-//        buildings.clear();
         openingRelativeLayout = findViewById(R.id.openingLayout);
         startOpeningAnimation();
 
         mainLayout.setOnClickListener(this);
         BuildingListInterface createBuildingList = new ConstructBuildingList(buildings);
         createBuildingList.setBuildingArrayList();
-//        Log.i("check size", Double.toString(buildings.get(0).getLat()));
         roomEditText.setOnKeyListener(this);
 
         munImageView.setOnClickListener(this);
@@ -107,36 +106,7 @@ public class GuestMainActivity extends AppCompatActivity implements View.OnKeyLi
         }
     }
 
-//    // showing menus to add courses, show courses, and log out options
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.guest_menu, menu);
-//
-//        return super.onCreateOptionsMenu(menu);
-//    }
-//
-//    // when one of the menu options are pressed
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        if (item.getItemId() == R.id.logoutMenu) {
-//            mAuth = FirebaseAuth.getInstance();
-//            mAuth.signOut();
-//            // finishes the activity and returns to initial activity
-//            finish();
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
-//
-//    //     Logout user if pressed the back button
-//    @Override
-//    public void onBackPressed() {
-//        super.onBackPressed();
-//        mAuth = FirebaseAuth.getInstance();
-//        mAuth.signOut();
-//    }
-
+    // Opening Animation in the form of transition fading
     public void startOpeningAnimation() {
         openingRelativeLayout.animate().alpha(1).setDuration(1200).start();
         Runnable r = new Runnable() {
@@ -167,6 +137,7 @@ public class GuestMainActivity extends AppCompatActivity implements View.OnKeyLi
         h.postDelayed(r, 3500);
     }
 
+    // Codes below are for enhanced user experience while using the on-screen keyboard
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
         // To ensure pressing enter on the on screen keyboard would also perform the intended search button tasks
