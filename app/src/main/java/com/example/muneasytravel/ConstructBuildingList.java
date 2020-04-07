@@ -21,7 +21,7 @@ public class ConstructBuildingList implements BuildingListInterface {
         buildings.add(new Building("BN", 47.575305, -52.734239,4));
         buildings.add(new Building("BT", 47.572472, -52.733165, 2));
         buildings.add(new Building("CL", 47.575979, -52.731578, 2));
-        buildings.add(new Building("CS", 47.572119, -52.732740));
+        buildings.add(new Building("CS", 47.572119, -52.732740)); // only 1 floor
         buildings.add(new Building("ER", 47.573991, -52.734271, 5));
         buildings.add(new Building("HH", 47.571609, -52.731290, 3));
         buildings.add(new Building("MU", 47.572126, -52.730651,2));

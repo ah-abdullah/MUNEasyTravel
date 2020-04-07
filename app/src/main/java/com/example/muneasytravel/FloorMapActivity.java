@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -21,6 +20,10 @@ import java.util.ArrayList;
 
 /**
  * FloorMapActivity allows user to view the floor maps of each floor of the building the user searched for
+ * Almost all floor map has the MUN logo as placeholder currently due to us not being able to collect the floor maps from MUN due to the COVID-19 situation
+ * However, the logic in the code is properly implemented already, so once we are able to collect the floor maps, it should just be a matter of uploading the
+ * Floor Map images on our backend storage to have them properly appear on the application
+ * For demonstration purpose, the 1st and 2nd floor map of Engineering building has floor map image instead of the MUN logo as placeholder
  */
 public class FloorMapActivity extends AppCompatActivity {
     int numberOfFloor;
@@ -139,7 +142,6 @@ public class FloorMapActivity extends AppCompatActivity {
     // Is executed if user taps on floor map, moves user to a new activity where users can enhance the floor map (zoom in/out) for a more clear picture
     public void fullScreenImageView(View view) {
         Intent intent = new Intent(getApplicationContext(), FullScreenFloorMapActivity.class);
-        intent.putExtra("currentFloor", currentFloor);
         intent.putExtra("imageURL", imageURL.get(currentFloor-1));
         startActivity(intent);
     }

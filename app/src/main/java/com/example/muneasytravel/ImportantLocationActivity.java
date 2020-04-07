@@ -19,7 +19,6 @@ public class ImportantLocationActivity extends AppCompatActivity {
 
     private ArrayList<String> locationName = new ArrayList<>();
     private ArrayList<String> roomNo = new ArrayList<>();
-    private String buildingPrefix;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +29,7 @@ public class ImportantLocationActivity extends AppCompatActivity {
         ListView importantLocationListView = findViewById(R.id.importantLocationListView);
 
         Intent intent = getIntent();
-        buildingPrefix = intent.getStringExtra("buildingPrefix");
+        String buildingPrefix = intent.getStringExtra("buildingPrefix");
 
         // Setting up the ArrayAdapter that importantLocationListView is using
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_2, android.R.id.text1, locationName){

@@ -32,13 +32,7 @@ public class UserAuthorizationFirebase implements UserAuthorizationInterface {
             FirebaseAuth.getInstance().signInWithEmailAndPassword(emailEditText.getText().toString(), passwordEditText.getText().toString())
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-//                            if (task.isSuccessful()) {
-//                                // Sign in success
-//                            } else {
-//                                // Sign in fails
-//                            }
-                        }
+                        public void onComplete(@NonNull Task<AuthResult> task) { }
                     });
         }
     }
@@ -55,9 +49,6 @@ public class UserAuthorizationFirebase implements UserAuthorizationInterface {
                                 // Sign up user + Add to Firebase Database)
                                 FirebaseDatabase.getInstance().getReference().child("Users").child(task.getResult().getUser().getUid()).child("Email").setValue(emailEditText.getText().toString());
                             }
-//                            else {
-//                                // Sign in fails
-//                            }
                         }
                     });
         }

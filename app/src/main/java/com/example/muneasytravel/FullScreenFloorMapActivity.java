@@ -13,9 +13,7 @@ import com.github.chrisbanes.photoview.PhotoView;
  */
 public class FullScreenFloorMapActivity extends AppCompatActivity {
 
-    private int currentFloor;
     private PhotoView photoView;
-    private Bitmap myImage;
     private String imageURL;
 
     @Override
@@ -25,7 +23,6 @@ public class FullScreenFloorMapActivity extends AppCompatActivity {
 
         photoView = findViewById(R.id.photo_view);
         Intent intent = getIntent();
-        currentFloor = intent.getIntExtra("currentFloor", 1);
         imageURL = intent.getStringExtra("imageURL"); // getting the image URL of the corresponding floor map from FloorMapActivity
         downloadImage();
     }
@@ -34,7 +31,7 @@ public class FullScreenFloorMapActivity extends AppCompatActivity {
     public void downloadImage() {
         ImageDownloader task = new ImageDownloader();
         try {
-            myImage = task.execute(imageURL).get();
+            Bitmap myImage = task.execute(imageURL).get();
             photoView.setImageBitmap(myImage);
         } catch (Exception e) {
             e.printStackTrace();
