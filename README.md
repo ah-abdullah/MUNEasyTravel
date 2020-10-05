@@ -21,11 +21,6 @@ The detailed class diagram for the project is as follows, along with the fields 
 <img src="https://i.imgur.com/zNOZNtf.jpg" alt="MUN Easy Travel Class Diagram" />
 
 ### Features
-Watch the following video to see the features of the application in action!
-
-[![MUN Easy Travel Video Demonstration](https://i.imgur.com/PDX1IEr.jpg)](https://youtu.be/zNNygxGoHRk "MUN Easy Travel Video Demonstration")
-
-Notable feautures:
 * Fully functional User Authentication using Google Firebase API.
 * Map Implementation using Google Maps API
 * Room Search with proper Room validation
@@ -34,4 +29,10 @@ Notable feautures:
 * Guest Access
 * Important Location Information
 * Floor Map Implementation
+
+Watch the following video to see the features of the application in action!
+
+[![MUN Easy Travel Video Demonstration](https://i.imgur.com/PDX1IEr.jpg)](https://youtu.be/zNNygxGoHRk "MUN Easy Travel Video Demonstration")
+
+
 
